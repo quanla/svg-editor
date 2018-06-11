@@ -1,5 +1,5 @@
+import {EditorApp} from "./app/editor-app";
+
 ReactDOM.render((
-    <div style={{height: "100%"}}>
-        He he he
-    </div>
+    <EditorApp style={{height: "100%"}} />
 ), document.getElementById("app-container"));

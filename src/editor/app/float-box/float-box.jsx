@@ -2,6 +2,7 @@ import classnames from "classnames";
 import {RComponent} from "../../common/r-component";
 
 function createDragger({getCurrentPosition, setPosition}) {
+    let dispose = null;
 
     const start = (e) => {
         let startPos = getCurrentPosition();
@@ -19,18 +20,26 @@ function createDragger({getCurrentPosition, setPosition}) {
             });
         };
         const stop = () => {
-            window.removeEventListener("mousemove", change);
-            window.removeEventListener("mouseup", stop);
+            dispose && dispose();
+            dispose = null;
         };
 
         window.addEventListener("mousemove", change);
         window.addEventListener("mouseup", stop);
+
+        dispose = () => {
+            window.removeEventListener("mousemove", change);
+            window.removeEventListener("mouseup", stop);
+        };
 
     };
 
     return {
         control: {
             onMouseDown: start,
+        },
+        dispose: () => {
+            dispose && dispose();
         },
     };
 }
@@ -48,6 +57,8 @@ export class FloatBox extends RComponent {
             getCurrentPosition: () => this.state.position,
             setPosition: (position) => this.setState({position}),
         });
+
+        this.onUnmount(this.dragger.dispose);
     }
 
     render() {

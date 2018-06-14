@@ -381,6 +381,14 @@ function range(from, to) {
     return col;
 }
 
+function replaceIndex(col, index, val) {
+    return [
+        ... col.slice(0, index),
+        val,
+        ... col.slice(index + 1),
+    ];
+}
+
 const Cols = {
     gen: (length) => {
         let ret = [];
@@ -441,6 +449,7 @@ const Cols = {
             }
         });
     },
+    replaceIndex,
     /**
      * Immutable
      * @param col

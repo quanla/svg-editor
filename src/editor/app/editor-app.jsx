@@ -5,6 +5,8 @@ import {History} from "./history";
 import {O} from "../common/utils/object-util";
 import {FloatBox} from "./float-box/float-box";
 import {DockedBox} from "./docked-box/docked-box";
+import {ReactKeyHook} from "../common/keys/react-key-hook";
+import {KeyCombo} from "../common/keys/key-combo";
 
 
 export class EditorApp extends RComponent {
@@ -15,28 +17,26 @@ export class EditorApp extends RComponent {
 
         this.state = {
             tool: drawTool,
-            toolState: drawTool.initState,
-            zoomState: null,
-            map: {dimension: {width: 200, height: 200}, polygons: []},
         };
 
         this.history = History.createHistory({
-            getState: () => O.getKeys(this.state, [""])
+            toolState: drawTool.initState,
+            zoomState: null,
+            map: {dimension: {width: 200, height: 200}, polygons: []},
         });
     }
 
 
     render() {
         const {style} = this.props;
-        const {tool, toolState, zoomState, map} = this.state;
+        const {tool} = this.state;
 
         const {main, quickProp} = tool.render({
-            toolState,
-            setToolState: (toolState) => this.setState({toolState}),
-            zoomState,
-            setZoomState: (zoomState) => this.setState({zoomState}),
-            map,
-            setMap: (map) => this.setState({map}),
+            state: this.history.getState(),
+            onChange: (newState) => {
+                this.history.push(newState);
+                this.forceUpdate();
+            },
         });
 
         return (
@@ -52,6 +52,14 @@ export class EditorApp extends RComponent {
                 {/*<FloatBox*/}
                     {/*render={(dimension) => main(dimension)}*/}
                 {/*/>*/}
+
+                <ReactKeyHook
+                    keyCombo={KeyCombo.compileCombo("cmd+Z")}
+                    action={() => {
+                        this.history.back();
+                        this.forceUpdate();
+                    }}
+                />
             </div>
         );
     }

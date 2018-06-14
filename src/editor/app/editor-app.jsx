@@ -3,6 +3,8 @@ import {RComponent} from "../common/r-component";
 import {drawTool} from "./tool/draw-tool";
 import {History} from "./history";
 import {O} from "../common/utils/object-util";
+import {FloatBox} from "./float-box/float-box";
+import {DockedBox} from "./docked-box/docked-box";
 
 
 export class EditorApp extends RComponent {
@@ -43,7 +45,13 @@ export class EditorApp extends RComponent {
                     {quickProp}
                 </div>
 
-                {main}
+                <DockedBox
+                    render={(dimension) => main(dimension)}
+                />
+
+                {/*<FloatBox*/}
+                    {/*render={(dimension) => main(dimension)}*/}
+                {/*/>*/}
             </div>
         );
     }

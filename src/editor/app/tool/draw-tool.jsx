@@ -4,9 +4,9 @@ const drawTool = {
     render: ({map, setMap, toolState, setToolState}) => {
 
         return {
-            main: (
+            main: ({width, height}) => (
                 <svg
-                    className="" style={{background: "white"}} width={200} height={200}
+                    className="" style={{background: "white"}} width={width} height={height}
                     onClick={(e) => {
 
                         const offset = e.target.getBoundingClientRect();

@@ -17,7 +17,7 @@ export class EditorApp extends RComponent {
             tool: drawTool,
             toolState: drawTool.initState,
             zoomState: null,
-            map: {boundaries: []},
+            map: {dimension: {width: 200, height: 200}, polygons: []},
         };
 
         this.history = History.createHistory({

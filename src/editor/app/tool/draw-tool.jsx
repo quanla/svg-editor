@@ -1,10 +1,12 @@
 import {Fragment} from "react";
+import {zoomed} from "./zoomed";
+
 const drawTool = {
     initState: {color: "blue"},
     render: ({map, setMap, toolState, setToolState}) => {
 
         return {
-            main: ({width, height}) => (
+            main: zoomed(map.dimension, ({width, height}) => (
                 <svg
                     className="" style={{background: "white"}} width={width} height={height}
                     onClick={(e) => {
@@ -32,7 +34,7 @@ const drawTool = {
                         </Fragment>
                     )}
                 </svg>
-            ),
+            )),
             quickProp: (
                 <div className="">
                     <a onClick={() => setToolState({...toolState, color: "red"})}>Red</a>
